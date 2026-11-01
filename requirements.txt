@@ -18,6 +18,15 @@ langchain-huggingface
 sentence-transformers
 pypdf
 
+# tool calling / MCP / web API
+mcp>=2
+fastapi
+uvicorn[standard]
+
+# tests
+pytest
+httpx
+
 # SLM (only for compare_slm_vs_llm.py)
 torch
 transformers
