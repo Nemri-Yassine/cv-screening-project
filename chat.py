@@ -44,6 +44,7 @@ class State(TypedDict):
     candidates: list
     tries: int
     answer: str
+    sources: list
 
 
 llm = ChatGroq(
@@ -80,7 +81,8 @@ prompt = ChatPromptTemplate.from_template(
     '''
     You are a helpful recruiting assistant
     you always answer the question given the candidates below
-    give the file name of each candidate you talk about
+    cite every candidate you talk about with its file name in square brackets, like [10554236.pdf]
+    never talk about a candidate that is not in the list
     if no candidate matches just say it
 
     question :
@@ -120,8 +122,23 @@ def build_filter(filters):
     return Filter(must=conditions) if conditions else None
 
 
+def doc_to_source(doc):
+    # langchain_qdrant adds internal keys like _id and _collection_name to the metadata
+    source = {key: value for key, value in doc.metadata.items() if not key.startswith("_")}
+    source["profile"] = doc.page_content
+    return source
+
+
+def format_source(source):
+    return (
+        f"[{source['file_name']}] category={source['category']} | job_title={source['job_title']} | "
+        f"years_experience={source['years_experience']} | education={source['education_level']} | "
+        f"skills={', '.join(source['skills'])} | summary={source['summary']}"
+    )
+
+
 def format_candidates(documents):
-    return "\n".join(str(doc.metadata) for doc in documents)
+    return "\n".join(format_source(doc_to_source(doc)) for doc in documents)
 
 
 # 3. The nodes of the graph
@@ -153,7 +170,7 @@ def generate(state):
         "question": state["question"],
         "context": format_candidates(state["candidates"]),
     })
-    return {"answer": answer}
+    return {"answer": answer, "sources": [doc_to_source(doc) for doc in state["candidates"]]}
 
 
 def check_candidates(state):
@@ -200,3 +217,4 @@ if __name__ == "__main__":
 
         result = cv_graph.invoke({"question": question})
         print('AI : ', result["answer"])
+        print('Sources : ', ", ".join(source["file_name"] for source in result["sources"]), "\n")
