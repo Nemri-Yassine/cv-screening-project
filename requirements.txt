@@ -1,0 +1,24 @@
+# core
+python-dotenv
+groq
+pandas
+
+# langchain
+langchain
+langchain-core
+langchain-groq
+langchain-community
+langgraph
+pydantic
+
+# RAG / vector store
+langchain-qdrant
+qdrant-client
+langchain-huggingface
+sentence-transformers
+pypdf
+
+# SLM (only for compare_slm_vs_llm.py)
+torch
+transformers
+peft

@@ -1,0 +1,10 @@
+__pycache__/
+.venv/
+.env
+
+# dataset and generated files
+data/
+train.csv
+test.csv
+slm-cv-classifier/
+.ipynb_checkpoints/
