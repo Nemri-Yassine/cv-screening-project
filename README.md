@@ -3,7 +3,7 @@
 A recruiter asks questions in natural language ("find me IT profiles with Python and 3+ years of experience")
 and the assistant searches a database of CVs (PDF) to answer, citing the CVs it used.
 
-**Authors:** [Yassine Nemri](https://github.com/Nemri-Yassine) · Ihab Lamouchi
+**Authors:** [Yassine Nemri](https://github.com/Nemri-Yassine) · [Ihab Lamouchi](https://github.com/iheblam)
 
 See [CONTRIBUTORS.md](CONTRIBUTORS.md) for the working agreement (daily commits, one change per commit).
 

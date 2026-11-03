@@ -2,8 +2,8 @@
 
 This project is developed by:
 
-- **Yassine Nemri**
-- **Ihab Lamouchi**
+- **Yassine Nemri** ([@Nemri-Yassine](https://github.com/Nemri-Yassine))
+- **Ihab Lamouchi** ([@iheblam](https://github.com/iheblam))
 
 ## Working agreement
 
