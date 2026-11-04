@@ -73,6 +73,15 @@ You should have : data/ACCOUNTANT/10554236.pdf, data/HR/...
 pip install -r requirements.txt
 ```
 
+### 4. Verify the setup
+
+```bash
+python scripts/check_setup.py
+```
+
+Fix anything marked `MISSING` (Docker Desktop running, `.env`, `data/` PDFs, frontend `npm install`).
+See also [docs/setup-notes-2026-11-04.md](docs/setup-notes-2026-11-04.md).
+
 ## Running the project
 
 8 - `python metadata_extractor.py` : test the extraction on one CV

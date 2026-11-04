@@ -13,7 +13,7 @@ Empty “daily” commits are not useful; the change itself is the trace.
 | Date | Owner | Goal | Expected commit |
 |------|--------|------|-----------------|
 | 2026-11-03 | Yassine | Publish the repository and team rules | repo + CONTRIBUTORS / PHASES |
-| 2026-11-04 | Ihab | Run the stack end-to-end (Docker, ingest, API, frontend) | setup notes / fixes from the first real run |
+| 2026-11-04 | Yassine (swap) | First machine check of the stack | `docs/setup-notes-2026-11-04.md` + `scripts/check_setup.py` |
 | 2026-11-05 | Yassine | Test the tool-calling agent with real Groq calls | agent prompt / tool description improvements |
 | 2026-11-06 | Ihab | Frontend polish (loading, errors, mobile) | UI improvements |
 | 2026-11-07 | Yassine | Citations UX (answer ↔ source ↔ PDF) | citation / panel improvements |
