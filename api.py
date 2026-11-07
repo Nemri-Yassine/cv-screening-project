@@ -43,10 +43,29 @@ class ChatRequest(BaseModel):
     history: list[ChatMessage] = []
 
 
+def citation_order(answer: str) -> list[str]:
+    """Unique PDF citations in the order they first appear in the answer."""
+    seen, order = set(), []
+    for match in re.finditer(r"\[([\w-]+\.pdf)\]", answer):
+        file_name = match.group(1)
+        if file_name not in seen:
+            seen.add(file_name)
+            order.append(file_name)
+    return order
+
+
 def sort_cited_first(answer, sources):
+    order = {file_name: index for index, file_name in enumerate(citation_order(answer))}
     for source in sources:
-        source["cited"] = f"[{source['file_name']}]" in answer
-    return sorted(sources, key=lambda source: not source["cited"])
+        source["cited"] = source["file_name"] in order
+        source["citation_index"] = order.get(source["file_name"])
+        if source["citation_index"] is not None:
+            source["citation_index"] += 1  # 1-based for the UI
+    # cited sources first, in the same order as in the answer, then the rest
+    return sorted(
+        sources,
+        key=lambda source: (0, source["citation_index"]) if source["cited"] else (1, source["file_name"]),
+    )
 
 
 @app.get("/api/health")

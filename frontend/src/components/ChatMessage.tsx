@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { citationIndex } from "../citations";
 import type { Message, Source } from "../types";
 import SourceCard from "./SourceCard";
 
@@ -13,9 +15,13 @@ interface Props {
   onCitation: (fileName: string) => void;
 }
 
-// [10554236.pdf] in the answer becomes a link that react-markdown renders as a citation chip
+// [10554236.pdf] -> markdown link; chip label shows [1], [2], ...
 function linkCitations(text: string) {
-  return text.replace(CITATION, (_, fileName) => `[${fileName}](${CITATION_PREFIX}${fileName})`);
+  return text.replace(CITATION, (_, fileName) => {
+    const index = citationIndex(text, fileName);
+    const label = index != null ? `[${index}]` : `[${fileName}]`;
+    return `[${label}](${CITATION_PREFIX}${fileName})`;
+  });
 }
 
 function formatArgs(args: Record<string, unknown>) {
@@ -25,6 +31,11 @@ function formatArgs(args: Record<string, unknown>) {
 }
 
 export default function ChatMessage({ message, selected, onSelect, onCitation }: Props) {
+  useEffect(() => {
+    if (!selected) return;
+    document.getElementById(`source-${selected}`)?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [selected]);
+
   if (message.role === "user") {
     return (
       <div className="message user">
@@ -45,6 +56,7 @@ export default function ChatMessage({ message, selected, onSelect, onCitation }:
 
   const sources = message.sources ?? [];
   const toolCalls = message.toolCalls ?? [];
+  const citedCount = sources.filter((source) => source.cited).length;
 
   return (
     <div className="message assistant">
@@ -81,8 +93,13 @@ export default function ChatMessage({ message, selected, onSelect, onCitation }:
               a: ({ href, children }) => {
                 if (href?.startsWith(CITATION_PREFIX)) {
                   const fileName = href.slice(CITATION_PREFIX.length);
+                  const active = fileName === selected;
                   return (
-                    <button className="citation" onClick={() => onCitation(fileName)} title="Open this CV">
+                    <button
+                      className={`citation ${active ? "active" : ""}`}
+                      onClick={() => onCitation(fileName)}
+                      title={`Open source ${fileName}`}
+                    >
                       {children}
                     </button>
                   );
@@ -102,7 +119,15 @@ export default function ChatMessage({ message, selected, onSelect, onCitation }:
 
       {sources.length > 0 && (
         <div className="sources">
-          <h4>Sources ({sources.length})</h4>
+          <h4>
+            Sources ({sources.length})
+            {citedCount > 0 && (
+              <span className="sources-hint">
+                {" "}
+                · {citedCount} cited in the answer — click a chip or a card to open the PDF
+              </span>
+            )}
+          </h4>
           <div className="source-grid">
             {sources.map((source) => (
               <SourceCard

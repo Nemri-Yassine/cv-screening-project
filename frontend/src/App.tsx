@@ -46,6 +46,7 @@ export default function App() {
 
     try {
       const response = await sendChat(question, mode, previous);
+      const firstCited = response.sources.find((source) => source.cited) ?? response.sources[0] ?? null;
       setMessages((current) => [
         ...current,
         {
@@ -58,6 +59,8 @@ export default function App() {
           mode: response.mode,
         },
       ]);
+      // open the first cited CV so answer ↔ source ↔ PDF is obvious in the demo
+      if (firstCited) setSelected(firstCited);
     } catch (error) {
       setMessages((current) => [
         ...current,

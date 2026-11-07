@@ -10,6 +10,7 @@ export interface Source {
   summary: string;
   profile: string;
   cited?: boolean;
+  citation_index?: number | null;
 }
 
 export interface ToolCall {

@@ -236,12 +236,50 @@ button:disabled {
   background: var(--primary-soft);
   color: var(--primary);
   font-size: 12px;
+  font-weight: 700;
   font-family: ui-monospace, Consolas, monospace;
   vertical-align: 1px;
 }
 
-.citation:hover {
-  background: #dfe2ff;
+.citation:hover,
+.citation.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+.sources-hint {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
+.cite-num {
+  color: var(--primary);
+}
+
+.retrieved-badge {
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.citation-link {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.citation-link.muted {
+  background: var(--bg);
+  color: var(--muted);
 }
 
 .trace {

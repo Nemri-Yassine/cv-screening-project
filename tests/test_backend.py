@@ -114,6 +114,20 @@ def test_api_validation(http):
     assert http.post("/api/chat", json={"question": ""}).status_code == 422
 
 
+def test_sources_follow_citation_order_in_the_answer():
+    from api import sort_cited_first
+
+    sources = [
+        {"file_name": "b.pdf", "job_title": "B"},
+        {"file_name": "a.pdf", "job_title": "A"},
+        {"file_name": "c.pdf", "job_title": "C"},
+    ]
+    ordered = sort_cited_first("Best are [a.pdf] then [b.pdf].", sources)
+    assert [s["file_name"] for s in ordered] == ["a.pdf", "b.pdf", "c.pdf"]
+    assert ordered[0]["citation_index"] == 1 and ordered[0]["cited"]
+    assert ordered[2]["citation_index"] is None and not ordered[2]["cited"]
+
+
 def test_mcp_server_exposes_the_tools():
     async def check():
         listed = await mcp_server.mcp.list_tools()

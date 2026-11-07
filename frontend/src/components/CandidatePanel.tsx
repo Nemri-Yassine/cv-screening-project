@@ -8,9 +8,10 @@ interface Props {
 
 export default function CandidatePanel({ source, onClose }: Props) {
   const url = cvUrl(source.file_name);
+  const index = source.citation_index;
 
   return (
-    <aside className="panel">
+    <aside className="panel" aria-label={`CV ${source.file_name}`}>
       <div className="panel-header">
         <div>
           <span className="category">{source.category}</span>
@@ -21,6 +22,16 @@ export default function CandidatePanel({ source, onClose }: Props) {
           ×
         </button>
       </div>
+
+      {source.cited && index != null ? (
+        <p className="citation-link">
+          Cited in the answer as <strong>[{index}]</strong> — PDF below is the source document.
+        </p>
+      ) : (
+        <p className="citation-link muted">
+          Retrieved for this question but not named in the answer. You can still open the CV.
+        </p>
+      )}
 
       <dl className="facts">
         <div>
