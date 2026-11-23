@@ -16,7 +16,7 @@ mcp = MCPServer(
 
 
 @mcp.tool()
-def search_candidates(query: str, category: str = "", min_years: int = 0, k: int = 5) -> list[dict]:
+def search_candidates(query: str, category: str = "", min_years: float = 0, k: int = 5) -> list[dict]:
     """Search the CV database for candidates matching a job / skills description.
 
     category is one of the database categories (see list_categories) or "" for all of them.

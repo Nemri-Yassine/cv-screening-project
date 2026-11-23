@@ -67,8 +67,8 @@ flowchart TD
 
 | Step | What the LLM does | File | Lines |
 |---|---|---|---|
-| Create Groq client | model `openai/gpt-oss-120b` | `metadata_extractor.py` | 18–22 |
-| Extract CV fields | structured output `CVMetadata` | `metadata_extractor.py` | 35–40 |
+| Create Groq client | model `openai/gpt-oss-120b` | `metadata_extractor.py` | 19–23 |
+| Extract CV fields | structured output `CVMetadata` | `metadata_extractor.py` | 36–41 |
 | Call extraction from ingest | `extract_metadata(text)` | `ingestion.py` | 69 |
 | Create Groq client (chat) | model `openai/gpt-oss-20b` | `chat.py` | 50–53 |
 | Extract search filters | `filter_chain.invoke(...)` | `chat.py` | 96, 147 |
@@ -82,7 +82,8 @@ flowchart TD
 ### Metadata fields (say this if asked “what metadata?”)
 
 From `metadata_extractor.py` (`CVMetadata`): `job_title`, `years_experience`, `education_level`, `skills`, `summary`  
-Plus folder name = `category`, and `file_name` for citations.
+Plus folder name = `category`, and `file_name` for citations.  
+`years_experience` is a **float** (example: 4.5). Groq rejects the structured answer when the field is an `int`.
 
 ---
 
@@ -116,6 +117,26 @@ flowchart LR
 
 ---
 
+## Same shape as the course repo
+
+Reference: [Nadjib23/AI-Engineering-Course](https://github.com/Nadjib23/AI-Engineering-Course), especially `labs/99-exercices/invoices_extractor/` and `labs/04-rag/`.
+
+| His file | Our file | Same idea |
+|---|---|---|
+| `src/metadata_extractor.py` | `metadata_extractor.py` | Pydantic model, Groq, `prompt \| llm.with_structured_output(...)` |
+| `src/ingesting.py` | `ingestion.py` | PyPDFLoader, MiniLM, Qdrant on `localhost:6333`, skip files already stored, metadata on the point |
+| `src/chat.py` | `chat.py` | Same prompt style, same collection connect, metadata `Filter` / `FieldCondition` |
+| `08` / `09` tool labs | `tools.py`, `agent.py` | `@tool`, `bind_tools`, tool loop. Ours is a LangGraph `ToolNode` |
+| `labs/04-rag/docker-compose.yml` | `docker-compose.yml` | Qdrant in Docker |
+| `labs/05-Evaluation` | `eval_retrieval.py`, `eval_generation.py` | Precision@k plus a generation judge |
+
+Two choices that are **not** a copy of the invoice exercise, on purpose:
+
+- He chunks the full PDF and searches **hybrid** (dense MiniLM + BM25). We store **one short profile per CV** and search **dense** only, because MiniLM only reads about 256 tokens and a CV is longer than that.
+- He demos with **Streamlit**. The course asked for a web interface, so we use **FastAPI + React**, and the same tools are also on MCP.
+
+---
+
 ## Progress status (honest)
 
 | Done in code | Still to finish for the course |
@@ -127,7 +148,7 @@ flowchart LR
 | GitHub repo with history | — |
 
 **Current week story for the teacher:**  
-“We built and published the core RAG pipeline (ingest → Qdrant → LangGraph chat). We added a setup checker after verifying the machine. Next we test the tool-calling agent with real API calls and polish the UI.”
+“The pipeline follows the course labs: metadata extractor, ingestion into Qdrant, then a LangGraph chat with filters and citations. On 23 Nov we fixed years of experience as a float, because Groq was rejecting 4.5 years. Retrieval stays dense on a short profile; hybrid BM25 is in his invoice lab, not in this project.”
 
 ---
 

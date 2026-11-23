@@ -9,7 +9,8 @@ load_dotenv()
 
 class CVMetadata(BaseModel):
     job_title: str = Field(description="Current or most recent job title")
-    years_experience: int = Field(description="Total years of professional experience, 0 if unknown")
+    # float and not int : the LLM often answers 4.5 years, an int makes Groq reject the answer
+    years_experience: float = Field(description="Total years of professional experience, e.g. 4.5, 0 if unknown")
     education_level: str = Field(description="Highest degree: 'High School', 'Bachelor', 'Master', 'PhD' or 'Unknown'")
     skills: list[str] = Field(description="The 10 main skills of the candidate")
     summary: str = Field(description="One sentence describing the candidate")

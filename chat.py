@@ -31,7 +31,7 @@ CATEGORIES = [
 class SearchFilters(BaseModel):
     search_query: str = Field(description="Short search query with the job and the skills the user is looking for")
     category: str = Field(description="One category from the list, or '' if it is not clear")
-    min_years: int = Field(0, description="Minimum years of experience asked, 0 if not mentioned")
+    min_years: float = Field(0, description="Minimum years of experience asked, 0 if not mentioned")
 
 
 class Grade(BaseModel):

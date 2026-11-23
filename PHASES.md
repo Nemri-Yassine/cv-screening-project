@@ -23,6 +23,7 @@ Empty “daily” commits are not useful; the change itself is the trace.
 | 2026-11-11 | Yassine | Report: architecture + evaluation sections | report update |
 | 2026-11-12 | Ihab | Demo script and sample questions | `docs/demo.md` |
 | 2026-11-13 | Both | Dry-run demo, fix bugs found | bugfixes |
+| 2026-11-23 | Yassine | Accept half-years from the LLM and map the code to the course labs | `years_experience` as float + teacher tracking |
 | Later | Both | Final report PDF + presentation | final deliverables |
 
 Owners can swap days if needed; what matters is that **someone commits every day**.

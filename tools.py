@@ -90,7 +90,7 @@ def compare(file_names, required_skills=None):
 # LangChain tools : the content goes to the LLM, the artifact (list of sources) is kept for the citations
 
 @tool(response_format="content_and_artifact")
-def search_candidates(query: str, category: str = "", min_years: int = 0, k: int = 5):
+def search_candidates(query: str, category: str = "", min_years: float = 0, k: int = 5):
     """Search the CV database for candidates matching a job / skills description.
 
     Args:

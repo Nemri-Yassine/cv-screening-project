@@ -177,8 +177,8 @@ def build():
     story.append(Paragraph("Where the LLM is called (Week 1)", s["h2"]))
     story.append(table([
         ["Step", "File", "Lines"],
-        ["Create Groq client (metadata)", "metadata_extractor.py", "18–22"],
-        ["Extract CV fields (structured)", "metadata_extractor.py", "35–40"],
+        ["Create Groq client (metadata)", "metadata_extractor.py", "19–23"],
+        ["Extract CV fields (structured)", "metadata_extractor.py", "36–41"],
         ["Call extraction during ingest", "ingestion.py", "69"],
         ["Create Groq client (chat)", "chat.py", "50–53"],
         ["Extract search filters", "chat.py", "96, 147"],
@@ -223,9 +223,10 @@ def build():
     ], [8.4 * cm, 8.4 * cm]))
 
     story.append(Paragraph(
-        "<b>Progress line to say:</b> “We built and published the core RAG pipeline "
-        "(ingest → Qdrant → LangGraph chat). We added a setup checker after verifying "
-        "the machine. Next we test the tool-calling agent with real API calls and polish the UI.”",
+        "<b>Progress line to say:</b> “The pipeline follows the course labs: metadata extractor, "
+        "ingestion into Qdrant, then a LangGraph chat with filters and citations. "
+        "Years of experience are a float, because Groq rejects 4.5 years when the field is an int. "
+        "We search a short profile with dense MiniLM; his invoice lab also uses hybrid BM25.”",
         s["say"],
     ))
 
